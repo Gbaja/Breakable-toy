@@ -51,7 +51,6 @@ class Home extends Component {
    const {selectedIndex} = this.state;
    return (
     <SafeAreaView style={styles.container}>
-      <Menu />
       <View>
         <Text style={styles.quoteText}> " {this.state.quote} "</Text>
         <Text style={styles.authorText}> {this.state.author} </Text>
