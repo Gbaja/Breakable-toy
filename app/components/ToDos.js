@@ -117,9 +117,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({todos}) => ({
-  todos,
-})
+const mapStateToProps = ({todos}) => {
+  //console.log(todos)
+  const allIds = todos.allIds;
+  const allTodos = allIds.map(id=> todos.byId[id])
+  return {
+    todos: allTodos
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   addTodo: (todo) => dispatch(addTodo(todo)),
