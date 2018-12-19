@@ -11,6 +11,7 @@ import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 
+import TodosQuery from "../redux/queries/todos"
 import { addTodo } from "../redux/actions/todos";
 
 //type Props = {};
@@ -57,32 +58,35 @@ class ToDos extends Component<Props> {
         <Text style={styles.welcome}>ToDo</Text>
         <View>
           <FlatList
-            data={this.props.todos}
-            renderItem={({ item }) => (
+            data={this.props.todoIds}
+            renderItem={({ item }) => {
+              const todo = this.props.findTodo(item)
+              return (
               <View>
                 <CheckBox
                   title={
                     <View style={styles.checkBoxContent}>
                       <Text
-                        style={item.completed ? styles.completed : null}
+                        style={todo.completed ? styles.completed : null}
                       >
-                        {item.toDo} 
+                        {todo.toDo} 
                       </Text>
                       <Icon
                         color="red"
                         name="trash"
                         type="font-awesome"
-                        onPress={() => this.handleDelete(item.id)}
+                        onPress={() => this.handleDelete(todo.id)}
                       />
                     </View>
                   }
-                  checked={item.completed}
-                  onIconPress={() => this.handleChecked(item.id)}
+                  checked={todo.completed}
+                  onIconPress={() => this.handleChecked(todo.id)}
                   containerStyle={styles.checkBoxContainter}
                 />
               </View>
-            )}
-            keyExtractor={item => `${item.id}`}
+             )
+          } }
+            keyExtractor={item => item}
           />
         </View>
       </View>
@@ -117,12 +121,10 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({todos}) => {
-  //console.log(todos)
-  const allIds = todos.allIds;
-  const allTodos = allIds.map(id=> todos.byId[id])
+const mapStateToProps = (state) => {
   return {
-    todos: allTodos
+    todoIds: TodosQuery.allIds(state),
+    findTodo: (id) => TodosQuery.find(state, id)
   }
 }
 
