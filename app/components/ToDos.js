@@ -12,7 +12,7 @@ import { CheckBox, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 
 import TodosQuery from "../redux/queries/todos"
-import { addTodo } from "../redux/actions/todos";
+import { addTodo, completeTodo } from "../redux/actions/todos";
 
 //type Props = {};
 class ToDos extends Component<Props> {
@@ -58,9 +58,10 @@ class ToDos extends Component<Props> {
         <Text style={styles.welcome}>ToDo</Text>
         <View>
           <FlatList
-            data={this.props.todoIds}
+            data={this.props.todos}
             renderItem={({ item }) => {
-              const todo = this.props.findTodo(item)
+              const todo = item
+              console.log("Todo in render: ". todo)
               return (
               <View>
                 <CheckBox
@@ -80,7 +81,7 @@ class ToDos extends Component<Props> {
                     </View>
                   }
                   checked={todo.completed}
-                  onIconPress={() => this.handleChecked(todo.id)}
+                  onIconPress={() => this.props.completeTodo(todo.id)}
                   containerStyle={styles.checkBoxContainter}
                 />
               </View>
@@ -122,14 +123,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
+  console.log("state in component: ", state)
   return {
-    todoIds: TodosQuery.allIds(state),
+    todos: TodosQuery.all(state),
     findTodo: (id) => TodosQuery.find(state, id)
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
   addTodo: (todo) => dispatch(addTodo(todo)),
+  completeTodo: (id) => dispatch(completeTodo({id}))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDos);
