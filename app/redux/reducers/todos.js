@@ -1,4 +1,4 @@
-import { ADD_TODO, COMPLETE_TODO } from "../actions/types";
+import { ADD_TODO, COMPLETE_TODO, DELETE_TODO } from "../actions/types";
 import { combineReducers } from "redux";
 import TodosQuery from '../queries/todos';
 
@@ -13,7 +13,7 @@ const addTodoEntry = (state, action) => {
 
 const completeTodoEntry = (state, action) => {
     const { payload } = action;
-    //console.log("TODOS: ", )
+    
     const todo = TodosQuery.find({todos: { byId: state }} , payload.id)
 
     return {
@@ -24,12 +24,37 @@ const completeTodoEntry = (state, action) => {
     }
 }
 
+const deleteTodoEntry = (state, action) => {
+    const { payload } = action;
+    
+
+    const todo = TodosQuery.find({ todos: { byId: state } }, payload.id);
+
+    const stateCopy = Object.assign({}, state)
+    delete stateCopy[payload.id]
+
+    return {
+        ...state,
+        ...stateCopy 
+    }
+}
+
+const deleteTodoId = (state, action) => {
+    const { payload } = action;
+    
+    const filterTodo = state.filter(item => item !== payload.id)
+    
+    return filterTodo;
+}
+
 const todosById = (state = {}, action) => {
   switch(action.type) {
      case ADD_TODO:
         return addTodoEntry(state, action)
      case COMPLETE_TODO:
         return completeTodoEntry(state, action)
+     case DELETE_TODO:
+        return deleteTodoEntry(state, action)
     default: 
         return state
   }
@@ -45,6 +70,8 @@ const allTodos = (state = [], action) => {
     switch (action.type) {
         case ADD_TODO:
             return addTodoId(state, action)
+        case DELETE_TODO:
+            return deleteTodoId(state, action)
         default:
             return state
     }

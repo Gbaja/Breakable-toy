@@ -12,7 +12,7 @@ import { CheckBox, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 
 import TodosQuery from "../redux/queries/todos"
-import { addTodo, completeTodo } from "../redux/actions/todos";
+import { addTodo, completeTodo, deleteTodo } from "../redux/actions/todos";
 
 //type Props = {};
 class ToDos extends Component<Props> {
@@ -76,7 +76,7 @@ class ToDos extends Component<Props> {
                         color="red"
                         name="trash"
                         type="font-awesome"
-                        onPress={() => this.handleDelete(todo.id)}
+                        onPress={() => this.props.deleteTodo(todo.id)}
                       />
                     </View>
                   }
@@ -132,7 +132,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   addTodo: (todo) => dispatch(addTodo(todo)),
-  completeTodo: (id) => dispatch(completeTodo({id}))
+  completeTodo: (id) => dispatch(completeTodo({id})),
+  deleteTodo: (id) => dispatch(deleteTodo({id}))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDos);
