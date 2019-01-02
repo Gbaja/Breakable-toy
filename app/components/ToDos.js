@@ -11,7 +11,8 @@ import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 import { connect } from "react-redux";
 
-import { addTodo } from "../redux/actions/todos";
+import TodosQuery from "../redux/queries/todos"
+import { addTodo, completeTodo } from "../redux/actions/todos";
 
 //type Props = {};
 class ToDos extends Component<Props> {
@@ -58,31 +59,35 @@ class ToDos extends Component<Props> {
         <View>
           <FlatList
             data={this.props.todos}
-            renderItem={({ item }) => (
+            renderItem={({ item }) => {
+              const todo = item
+              console.log("Todo in render: ". todo)
+              return (
               <View>
                 <CheckBox
                   title={
                     <View style={styles.checkBoxContent}>
                       <Text
-                        style={item.completed ? styles.completed : null}
+                        style={todo.completed ? styles.completed : null}
                       >
-                        {item.toDo} 
+                        {todo.toDo} 
                       </Text>
                       <Icon
                         color="red"
                         name="trash"
                         type="font-awesome"
-                        onPress={() => this.handleDelete(item.id)}
+                        onPress={() => this.handleDelete(todo.id)}
                       />
                     </View>
                   }
-                  checked={item.completed}
-                  onIconPress={() => this.handleChecked(item.id)}
+                  checked={todo.completed}
+                  onIconPress={() => this.props.completeTodo(todo.id)}
                   containerStyle={styles.checkBoxContainter}
                 />
               </View>
-            )}
-            keyExtractor={item => `${item.id}`}
+             )
+          } }
+            keyExtractor={item => item}
           />
         </View>
       </View>
@@ -117,12 +122,17 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({todos}) => ({
-  todos,
-})
+const mapStateToProps = (state) => {
+  console.log("state in component: ", state)
+  return {
+    todos: TodosQuery.all(state),
+    findTodo: (id) => TodosQuery.find(state, id)
+  }
+}
 
 const mapDispatchToProps = (dispatch) => ({
   addTodo: (todo) => dispatch(addTodo(todo)),
+  completeTodo: (id) => dispatch(completeTodo({id}))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDos);

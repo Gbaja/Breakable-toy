@@ -8,7 +8,6 @@ import {
 } from "react-native";
 
 import { Button, ButtonGroup } from "react-native-elements";
-import Menu from "./Menu";
 
 class Home extends Component {
   constructor(props) {
