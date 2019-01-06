@@ -1,3 +1,5 @@
-export const ADD_TODO = "ADD_TODO";
-export const COMPLETE_TODO = "COMPLETE_TODO";
-export const DELETE_TODO = "DELETE_TODO";
+const ADD_TODO = "ADD_TODO";
+const COMPLETE_TODO = "COMPLETE_TODO";
+const DELETE_TODO = "DELETE_TODO";
+
+export { ADD_TODO, COMPLETE_TODO, DELETE_TODO }

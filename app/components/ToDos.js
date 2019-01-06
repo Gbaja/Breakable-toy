@@ -18,47 +18,32 @@ import { addTodo, completeTodo, deleteTodo } from "../redux/actions/todos";
 class ToDos extends Component<Props> {
 
   componentDidMount(){
-    this.props.addTodo({
+    const { addTodo } = this.props; 
+    addTodo({
       id: 1,
       toDo: "Build a Todo App",
       completed: true
     });
-    this.props.addTodo({
+    addTodo({
       id: 2,
       toDo: "Do presentation",
       completed: false
     });
-    this.props.addTodo({
+    addTodo({
       id: 3,
       toDo: "Learn react native",
       completed: false,
     })
   }
 
-  handleChecked = id => {
-    const markToDo = this.props.todos.map(item => {
-      if (item.id == id) {
-        item.completed = !item.completed;
-        return item;
-      } else {
-        return item;
-      }
-    });
-    this.setState({ toDos: markToDo });
-  };
-
-  handleDelete = id => {
-    const filterById = this.props.todos.filter(item => item.id !== id);
-    this.setState({ toDos: filterById });
-  };
-
   render() {
+    const { todos, deleteTodo, completeTodo } = this.props
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>ToDo</Text>
         <View>
           <FlatList
-            data={this.props.todos}
+            data={todos}
             renderItem={({ item }) => {
               const todo = item
               console.log("Todo in render: ". todo)
@@ -76,18 +61,18 @@ class ToDos extends Component<Props> {
                         color="red"
                         name="trash"
                         type="font-awesome"
-                        onPress={() => this.props.deleteTodo(todo.id)}
+                        onPress={() => deleteTodo(todo.id)}
                       />
                     </View>
                   }
                   checked={todo.completed}
-                  onIconPress={() => this.props.completeTodo(todo.id)}
+                  onIconPress={() => completeTodo(todo.id)}
                   containerStyle={styles.checkBoxContainter}
                 />
               </View>
              )
           } }
-            keyExtractor={item => item}
+            keyExtractor={item => item.id}
           />
         </View>
       </View>
