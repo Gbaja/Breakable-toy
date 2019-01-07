@@ -1,4 +1,4 @@
-import { ADD_TODO, COMPLETE_TODO} from "./types";
+import { ADD_TODO, COMPLETE_TODO} from './types';
 
 const addTodo = payload => ({
   type: ADD_TODO,
@@ -8,6 +8,6 @@ const addTodo = payload => ({
 const completeTodo = payload => ({
   type: COMPLETE_TODO,
   payload
-})
+});
 
-export { addTodo, completeTodo }
+export { addTodo, completeTodo };

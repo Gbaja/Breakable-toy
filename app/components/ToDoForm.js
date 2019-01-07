@@ -1,18 +1,17 @@
-import React, { Component } from "react";
-import { StyleSheet, Text, TextInput, View, Picker, Alert } from "react-native";
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Picker, Alert } from 'react-native';
 import {
   Button,
   FormLabel,
   FormInput,
-  FormValidationMessage
-} from "react-native-elements";
+} from 'react-native-elements';
 
 class ToDoForm extends Component {
   state = {
-    toDo: "",
-    extraInfo: "",
-    deadline: "",
-    priority: "0"
+    toDo: '',
+    extraInfo: '',
+    deadline: '',
+    priority: '0'
   };
 
   handleTextChange = (text, target) => {
@@ -24,7 +23,7 @@ class ToDoForm extends Component {
   };
 
   render() {
-    const { toDo, extraInfo, deadline, priority } = this.state;
+    const { toDo, extraInfo, deadline } = this.state;
 
     return (
       <View>
@@ -33,28 +32,28 @@ class ToDoForm extends Component {
         <FormInput
           value={toDo}
           inputStyle={styles.textInput}
-										onChangeText={text => this.handleTextChange(text, "toDo")}
-										underlineColorAndroid= "green"
-				/>
+          onChangeText={text => this.handleTextChange(text, 'toDo')}
+          underlineColorAndroid= "green"
+        />
         <FormLabel>Extra info</FormLabel>
         <FormInput
           value={extraInfo}
           inputStyle={styles.textInput}
-										onChangeText={text => this.handleTextChange(text, "extraInfo")}
-							   underlineColorAndroid="green"
+          onChangeText={text => this.handleTextChange(text, 'extraInfo')}
+          underlineColorAndroid="green"
         />
         <FormLabel>Deadline</FormLabel>
         <FormInput
           value={deadline}
           inputStyle={styles.textInput}
-										onChangeText={text => this.handleTextChange(text, "deadline")}
-							   underlineColorAndroid="green"
+          onChangeText={text => this.handleTextChange(text, 'deadline')}
+          underlineColorAndroid="green"
         />
         <Picker
           selectedValue={this.state.priority}
           style={{ height: 50, width: 100 }}
           onValueChange={itemValue =>
-            this.handleTextChange(itemValue, "priority")
+            this.handleTextChange(itemValue, 'priority')
           }
         >
           <Picker.Item label="1" value="1" />
@@ -75,10 +74,10 @@ class ToDoForm extends Component {
 
 const styles = StyleSheet.create({
   textInput: {
-				borderBottomColor: "green"
+    borderBottomColor: 'green'
   },
   button: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
   }
 });
 export default ToDoForm;
