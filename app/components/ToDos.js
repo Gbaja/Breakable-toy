@@ -6,33 +6,33 @@
  * @flow
  */
 
-import React, { Component } from "react";
-import { Button, FlatList, StyleSheet, Text, View } from "react-native";
-import { CheckBox, Icon } from "react-native-elements";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { CheckBox, Icon } from 'react-native-elements';
+import { connect } from 'react-redux';
 
-import TodosQuery from "../redux/queries/todos"
-import { addTodo, completeTodo } from "../redux/actions/todos";
+import TodosQuery from '../redux/queries/todos';
+import { addTodo, completeTodo } from '../redux/actions/todos';
 
 //type Props = {};
-class ToDos extends Component<Props> {
+class ToDos extends Component {
 
   componentDidMount(){
     this.props.addTodo({
       id: 1,
-      toDo: "Build a Todo App",
+      toDo: 'Build a Todo App',
       completed: true
     });
     this.props.addTodo({
       id: 2,
-      toDo: "Do presentation",
+      toDo: 'Do presentation',
       completed: false
     });
     this.props.addTodo({
       id: 3,
-      toDo: "Learn react native",
+      toDo: 'Learn react native',
       completed: false,
-    })
+    });
   }
 
   handleChecked = id => {
@@ -40,9 +40,9 @@ class ToDos extends Component<Props> {
       if (item.id == id) {
         item.completed = !item.completed;
         return item;
-      } else {
-        return item;
-      }
+      } 
+      return item;
+      
     });
     this.setState({ toDos: markToDo });
   };
@@ -60,33 +60,32 @@ class ToDos extends Component<Props> {
           <FlatList
             data={this.props.todos}
             renderItem={({ item }) => {
-              const todo = item
-              console.log("Todo in render: ". todo)
+              const todo = item;
               return (
-              <View>
-                <CheckBox
-                  title={
-                    <View style={styles.checkBoxContent}>
-                      <Text
-                        style={todo.completed ? styles.completed : null}
-                      >
-                        {todo.toDo} 
-                      </Text>
-                      <Icon
-                        color="red"
-                        name="trash"
-                        type="font-awesome"
-                        onPress={() => this.handleDelete(todo.id)}
-                      />
-                    </View>
-                  }
-                  checked={todo.completed}
-                  onIconPress={() => this.props.completeTodo(todo.id)}
-                  containerStyle={styles.checkBoxContainter}
-                />
-              </View>
-             )
-          } }
+                <View>
+                  <CheckBox
+                    title={
+                      <View style={styles.checkBoxContent}>
+                        <Text
+                          style={todo.completed ? styles.completed : null}
+                        >
+                          {todo.toDo} 
+                        </Text>
+                        <Icon
+                          color="red"
+                          name="trash"
+                          type="font-awesome"
+                          onPress={() => this.handleDelete(todo.id)}
+                        />
+                      </View>
+                    }
+                    checked={todo.completed}
+                    onIconPress={() => this.props.completeTodo(todo.id)}
+                    containerStyle={styles.checkBoxContainter}
+                  />
+                </View>
+              );
+            } }
             keyExtractor={item => item}
           />
         </View>
@@ -98,7 +97,7 @@ class ToDos extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5FCFF",
+    backgroundColor: '#F5FCFF',
     paddingRight: 20
   },
   welcome: {
@@ -106,33 +105,32 @@ const styles = StyleSheet.create({
     margin: 10
   },
   checkBoxContainter: {
-    backgroundColor: "white",
-    borderColor: "transparent",
+    backgroundColor: 'white',
+    borderColor: 'transparent',
   },
   checkBoxContent: { 
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between"
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   completed: {
-    textDecorationLine: "line-through",
-    textDecorationColor: "green",
-    color: "gray",
-    textDecorationStyle: "double"
+    textDecorationLine: 'line-through',
+    textDecorationColor: 'green',
+    color: 'gray',
+    textDecorationStyle: 'double'
   }
 });
 
 const mapStateToProps = (state) => {
-  console.log("state in component: ", state)
   return {
     todos: TodosQuery.all(state),
     findTodo: (id) => TodosQuery.find(state, id)
-  }
-}
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   addTodo: (todo) => dispatch(addTodo(todo)),
   completeTodo: (id) => dispatch(completeTodo({id}))
-})
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDos);
